@@ -16,10 +16,12 @@ Ex: Dynamo DB table and index creation, IAM policy for lambda to access resource
 for AWS labmbda functions 
 
 **Assumptions**: 
-1. Sample-size - It won't return anything if there is no sufficient number of total ratings. Limit has been defined in 
+1. Content details are stored in a different service (micro) and rating creation and retrieval will occur based on the content id.
+
+2. Sample-size - It won't return anything if there is no sufficient number of total ratings. Limit has been defined in 
 `src/constant/index.js` and it has been set to 20 currently.
 
-2. Outliers - I assumed that there will be a machine learning model in order to detect outliers and remove / disable from the DB
+3. Outliers - I assumed that there will be a machine learning model in order to detect outliers and remove / disable from the DB
 
 ## Prerequisites
 
