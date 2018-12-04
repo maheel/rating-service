@@ -1,0 +1,35 @@
+{
+  "$id": "http://iflix.com/schemas/rating+v1#",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "required": [
+    "userId",
+    "contentId",
+    "rating"
+  ],
+  "properties": {
+    "userId": {
+      "$id": "/properties/userId",
+      "type": "integer",
+      "title": "User id",
+      "description": "User id"
+    },
+    "contentId": {
+      "$id": "/properties/contentId",
+      "type": "integer",
+      "title": "Content Id",
+      "description": "Content Id"
+    },
+    "rating": {
+      "$id": "/properties/rating",
+      "type": "integer",
+      "title": "Rating",
+      "description": "Rating",
+      "minimum": 1,
+      "maximum": 5
+
+    }
+  },
+  "additionalProperties": false
+}

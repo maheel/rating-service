@@ -1,0 +1,4 @@
+{
+  "httpMethod": "POST",
+  "body": "{\"userId\":\"4188346\",\"contentId\":\"562135\",\"rating\":\"5\"}"
+}

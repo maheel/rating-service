@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "05826a8b-e1cf-450b-91b3-75678f2cfd8a",
+		"name": "Rating Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Create Rating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f493cdee-f1f0-4187-90d7-3481a263c41c",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"const contentId = response.contentId;",
+							"",
+							"tests[\"Status code is 201 Created\"] = responseCode.code === 201;",
+							"tests[\"Response contains contentId\"] = response.hasOwnProperty(\"contentId\");",
+							"tests[\"Response contains userId\"] = response.hasOwnProperty(\"userId\");",
+							"tests[\"Response contains rating\"] = response.hasOwnProperty(\"rating\");",
+							"",
+							"postman.setEnvironmentVariable(\"contentId\", contentId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n  \"userId\" : {{userId}},\n  \"contentId\" : 562135,\n  \"rating\" : 4\n}"
+				},
+				"url": {
+					"raw": "{{url}}/rating",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Get Rating By Content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd56270b-f5e0-4987-a352-c226f3e7f938",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response code is 200 OK\"] = responseCode.code === 200;",
+							"tests[\"Response contains contentId\"] = response.hasOwnProperty(\"contentId\");",
+							"tests[\"Response contains averageRating\"] = response.hasOwnProperty(\"averageRating\");",
+							"tests[\"Response contains totalRatingCount\"] = response.hasOwnProperty(\"totalRatingCount\");",
+							"tests[\"Response contains ratingDetails\"] = response.hasOwnProperty(\"ratingDetails\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/rating/content/562135",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rating",
+						"content",
+						"562135"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
