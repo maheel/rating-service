@@ -102,6 +102,15 @@ functions:
           method: PUT
           cors: true
 
+  delete-rating:
+    handler: handler/rating.delete
+    timeout: 6
+    events:
+      - http:
+          path: rating/{contentId}
+          method: DELETE
+          cors: true
+
   get-rating-by-content:
     handler: handler/rating.getRatingByContent
     timeout: 10

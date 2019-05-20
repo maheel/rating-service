@@ -62,6 +62,24 @@ export default class dynamoDBClient {
   }
 
   /**
+     * Delete a record by key
+     *
+     * @param object item
+     *
+     * @returns {Promise.<*>}
+     */
+  async delete(key) {
+    const params = {
+      TableName: this.tableName,
+      Key: key,
+    };
+
+    const response = await this.dynamoDB.deleteItemAsync(params);
+
+    return response;
+  }
+
+  /**
    * Query an index
    *
    * @param id

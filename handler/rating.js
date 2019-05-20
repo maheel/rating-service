@@ -83,6 +83,30 @@ module.exports.update = async (event, context, callback) => {
   );
 };
 
+module.exports.delete = async (event, context, callback) => {
+  await rating.deleteRating(
+    event,
+    (error, response) => {
+      let finalResponse;
+      let statusCode;
+
+      if (error !== null) {
+        finalResponse = formatErrorResponse(error);
+      } else {
+        statusCode = 200;
+        finalResponse = response;
+      }
+
+      return callback(
+        null, {
+          statusCode,
+          body: JSON.stringify(finalResponse),
+        },
+      );
+    },
+  );
+};
+
 module.exports.getRatingByContent = async (event, context, callback) => {
   await rating.getRatingByContent(
     event,
