@@ -143,6 +143,10 @@ async function updateRating(request, callback) {
 
     const ratingRecord = await getContentRatingByUser(contentId.toString(), userId.toString());
 
+    if (ratingRecord.Count === 0) {
+      throw new customError('User has yet to vote for this content');
+    }
+
     const key = {
       id: ratingRecord.Items[0].id,
     };
