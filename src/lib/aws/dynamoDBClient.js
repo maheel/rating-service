@@ -41,6 +41,27 @@ export default class dynamoDBClient {
   }
 
   /**
+     * Update a record
+     *
+     * @param object item
+     *
+     * @returns {Promise.<*>}
+     */
+  async update(key, expression, value) {
+    const params = {
+      TableName: this.tableName,
+      Key: key,
+      UpdateExpression: expression,
+      ExpressionAttributeValues: value,
+      ReturnValues: 'UPDATED_NEW',
+    };
+
+    const response = await this.dynamoDB.updateItemAsync(params);
+
+    return response;
+  }
+
+  /**
    * Query an index
    *
    * @param id

@@ -40,14 +40,14 @@ async function prepareRatingItem(item) {
 }
 
 /**
- * Check if user has already voted for the same content
+ * Get contentId rating by userId
  *
  * @param contentId
  * @param userId
  *
  * @returns {Promise.<boolean>}
  */
-async function hasUserAlreadyVotedForSameContent(contentId, userId) {
+async function getContentRatingByUser(contentId, userId) {
   const searchParams = {
     KeyConditionExpression: 'contentId = :c',
     ExpressionAttributeValues: {
@@ -65,7 +65,22 @@ async function hasUserAlreadyVotedForSameContent(contentId, userId) {
   const dynamoDB = new dynamoDBClient(ratingTable, contentIdIndex);
   const response = await dynamoDB.query(searchParams);
 
-  if (response.Count > 0) {
+  return response;
+}
+
+
+/**
+ * Check if user has already voted for the same content
+ *
+ * @param contentId
+ * @param userId
+ *
+ * @returns {Promise.<boolean>}
+ */
+async function hasUserAlreadyVotedForSameContent(contentId, userId) {
+  const rating = await getContentRatingByUser(contentId, userId);
+
+  if (rating.Count > 0) {
     throw new customError('User has already voted for this content');
   }
 
@@ -98,6 +113,52 @@ async function createRating(request, callback) {
     console.log('[Info]: Saving in DynamoDB');
     const dynamoDB = new dynamoDBClient(ratingTable);
     await dynamoDB.create(itemTobeSaved);
+
+    return callback(null, body);
+  } catch (error) {
+    console.log('[error]', JSON.stringify(error));
+    return callback(error);
+  }
+}
+
+/**
+ * Update rating
+ *
+ * @param request
+ * @param callback
+ *
+ * @returns {Promise.<*>}
+ */
+async function updateRating(request, callback) {
+  try {
+    const body = JSON.parse(request.body);
+    const { contentId, userId, rating } = body;
+
+    const ratingSchema = 'http://iflix.com/schemas/rating+v1#';
+    const validationResult = await validateSchema.validateRequest(ratingSchema, body);
+
+    if (validationResult.valid !== true) {
+      throw new customError(validationResult.errors, validationResult.errors[0].status);
+    }
+
+    const ratingRecord = await getContentRatingByUser(contentId.toString(), userId.toString());
+
+    const key = {
+      id: ratingRecord.Items[0].id,
+    };
+    const expression = 'set rating = :r, updatedAt = :u';
+    const value = {
+      ':r': {
+        N: rating.toString(),
+      },
+      ':u': {
+        S: moment().format(),
+      },
+    };
+
+    console.log('[Info]: Saving in DynamoDB');
+    const dynamoDB = new dynamoDBClient(ratingTable);
+    await dynamoDB.update(key, expression, value);
 
     return callback(null, body);
   } catch (error) {
@@ -186,5 +247,6 @@ async function getRatingByContent(request, callback) {
 
 export default {
   createRating,
+  updateRating,
   getRatingByContent,
 };

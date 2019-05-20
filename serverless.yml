@@ -92,6 +92,15 @@ functions:
           path: rating
           method: POST
           cors: true
+  
+  update-rating:
+    handler: handler/rating.update
+    timeout: 6
+    events:
+      - http:
+          path: rating/{contentId}
+          method: PUT
+          cors: true
 
   get-rating-by-content:
     handler: handler/rating.getRatingByContent
