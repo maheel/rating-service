@@ -184,7 +184,42 @@ async function getRatingByContent(request, callback) {
   }
 }
 
+async function updateRatingByContent(request, callback) {
+  try {
+    const { contentId } = request.pathParameters
+    
+    const response = {
+      contentId,
+      method: 'updated'
+    }
+
+    return callback(null, response)
+  } catch (error) {
+    console.log('[error]', JSON.stringify(error))
+    return callback(error)
+  }
+}
+
+async function deleteRatingByContent(request, callback) {
+  try {
+    const { contentId } = request.pathParameters
+    
+    const response = {
+      contentId,
+      method: 'deleted'
+    }
+
+    return callback(null, response)
+  } catch (error) {
+    console.log('[error]', JSON.stringify(error))
+    return callback(error)
+  }
+}
+
+
 export default {
   createRating,
   getRatingByContent,
+  updateRatingByContent,
+  deleteRatingByContent
 };

@@ -103,6 +103,26 @@ functions:
           method: GET
           cors: true
 
+  update-rating-by-content:
+    handler: handler/rating.updateRatingByContent
+    timeout: 10
+    memory: 512
+    events:
+      - http:
+          path: rating/content/{contentId}
+          method: PUT
+          cors: true
+
+  delete-rating-by-content:
+    handler: handler/rating.deleteRatingByContent
+    timeout: 10
+    memory: 512
+    events:
+      - http:
+          path: rating/content/{contentId}
+          method: DELETE
+          cors: true
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js

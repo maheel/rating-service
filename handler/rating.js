@@ -83,3 +83,53 @@ module.exports.getRatingByContent = async (event, context, callback) => {
     },
   );
 };
+
+module.exports.updateRatingByContent = async (event, context, callback) => {
+  await rating.updateRatingByContent(
+    event,
+    (error, response) => {
+      let finalResponse;
+      let statusCode;
+
+      if (error !== null) {
+        finalResponse = formatErrorResponse(error);
+      } else {
+        statusCode = 200;
+        finalResponse = response;
+      }
+
+      return callback(
+        null,
+        {
+          statusCode,
+          body: JSON.stringify(finalResponse),
+        },
+      );
+    },
+  );
+};
+
+module.exports.deleteRatingByContent = async (event, context, callback) => {
+  await rating.updateRatingByContent(
+    event,
+    (error, response) => {
+      let finalResponse;
+      let statusCode;
+
+      if (error !== null) {
+        finalResponse = formatErrorResponse(error);
+      } else {
+        statusCode = 200;
+        finalResponse = response;
+      }
+
+      return callback(
+        null,
+        {
+          statusCode,
+          body: JSON.stringify(finalResponse),
+        },
+      );
+    },
+  );
+};
