@@ -1,5 +1,5 @@
 create-rating:
-  handler: src/handler/rating/create.process
+  handler: handler/rating/create.process
   timeout: 6
   events:
     - http:
@@ -8,7 +8,7 @@ create-rating:
         cors: true
 
 update-rating:
-  handler: src/handler/rating/update.process
+  handler: handler/rating/update.process
   timeout: 6
   events:
     - http:
@@ -17,7 +17,7 @@ update-rating:
         cors: true
 
 delete-rating:
-  handler: src/handler/rating/delete.process
+  handler: handler/rating/delete.process
   timeout: 6
   events:
     - http:
@@ -26,7 +26,7 @@ delete-rating:
         cors: true
 
 get-rating-by-content:
-  handler: src/handler/rating/getRatingByContent.process
+  handler: handler/rating/getRatingByContent.process
   timeout: 10
   memory: 512
   events:

@@ -1,10 +1,10 @@
-import formatErrorResponse from '../../../utils/formatError';
-import rating from '../../rating';
+import formatErrorResponse from '../../utils/formatError';
+import { updateRating } from '../../src/rating';
 
 module.exports.process = async (event) => {
   try {
     const statusCode = 201;
-    const response = await rating.updateRating(event);
+    const response = await updateRating(event);
 
     return {
       statusCode,
