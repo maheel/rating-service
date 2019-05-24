@@ -3,7 +3,7 @@ import { deleteRating } from '../../src/rating';
 
 module.exports.process = async (event) => {
   try {
-    const statusCode = 201;
+    const statusCode = 202;
     const response = await deleteRating(event);
 
     return {

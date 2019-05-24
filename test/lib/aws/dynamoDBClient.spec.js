@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 import { expect } from 'chai';
 import AWS from 'mock-aws';
 import Promise from 'bluebird';
@@ -38,6 +39,82 @@ describe('dynamoDBClient', function () {
       const dynamoDB = new dynamoDBClient(table);
       const actualResult = await dynamoDB.create(itemTobSaved);
 
+      expect(actualResult).to.deep.equal(dynamoDBResponse);
+    });
+  });
+
+  describe('update', function () {
+    it('update records successfully', async function () {
+      const itemTobSaved = {
+        id: {
+          S: 'bdf4c5fe-c717-4a62-986d-e0e2b5d153ce',
+        },
+        contentId: {
+          N: '562135',
+        },
+        userId: {
+          N: '4134346',
+        },
+        rating: {
+          N: '10',
+        },
+      };
+
+      const now = moment().format();
+      const key = {
+        id: itemTobSaved.id,
+      };
+      const expression = 'set rating = :r, updatedAt = :u';
+      const value = {
+        ':r': {
+          N: '1',
+        },
+        ':u': {
+          S: now,
+        },
+      };
+
+      const dynamoDBResponse = require('../../fixture/aws/dynamodb-create-rating-response');
+
+      AWS.mock('DynamoDB', 'updateItem', dynamoDBResponse);
+
+      const dynamoDB = new dynamoDBClient(table);
+      await dynamoDB.create(itemTobSaved);
+      const actualResult = await dynamoDB.update(key, expression, value);
+
+      expect(actualResult).to.deep.equal(dynamoDBResponse);
+    });
+  });
+
+  describe('delete', function () {
+    it('delete records successfully', async function () {
+      const itemTobSaved = {
+        id: {
+          S: 'bdf4c5fe-c717-4a62-986d-e0e2b5d153ce',
+        },
+        contentId: {
+          N: '562135',
+        },
+        userId: {
+          N: '4134346',
+        },
+        rating: {
+          N: '10',
+        },
+      };
+
+      const key = {
+        id: itemTobSaved.id,
+      };
+
+      const dynamoDBResponse = require('../../fixture/aws/dynamodb-create-rating-response');
+
+      AWS.mock('DynamoDB', 'deleteItem', dynamoDBResponse);
+
+      const dynamoDB = new dynamoDBClient(table);
+      await dynamoDB.create(itemTobSaved);
+      const actualResult = await dynamoDB.delete(key);
+      
       expect(actualResult).to.deep.equal(dynamoDBResponse);
     });
   });

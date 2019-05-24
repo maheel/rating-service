@@ -34,26 +34,18 @@ const updateRating = async (request) => {
       throw new customError('User has yet to vote for this content');
     }
 
-    const key = {
-      id: ratingRecord.Items[0].id,
-    };
+    const key = { id: ratingRecord.Items[0].id };
     const expression = 'set rating = :r, updatedAt = :u';
     const value = {
-      ':r': {
-        N: rating.toString(),
-      },
-      ':u': {
-        S: moment().format(),
-      },
+      ':r': { N: rating.toString() },
+      ':u': { S: moment().format() },
     };
 
-    console.log('[Info]: Saving in DynamoDB');
     const dynamoDB = new dynamoDBClient(ratingTable);
     await dynamoDB.update(key, expression, value);
 
     return body;
   } catch (error) {
-    console.log('[error]', JSON.stringify(error));
     return error;
   }
 };

@@ -1,0 +1,12 @@
+{
+  "path": "/rating/562131",
+  "pathParameters": {
+    "contentId": "562135"
+  },
+  "httpMethod": "PUT",
+  "body": {
+    "userId": 4188346,
+    "contentId": 562135,
+    "rating": 1
+  }
+}

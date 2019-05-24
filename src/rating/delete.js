@@ -36,13 +36,11 @@ const deleteRating = async (request) => {
       id: ratingRecord.Items[0].id,
     };
 
-    console.log('[Info]: Saving in DynamoDB');
     const dynamoDB = new dynamoDBClient(ratingTable);
     await dynamoDB.delete(key);
 
     return body;
   } catch (error) {
-    console.log('[error]', JSON.stringify(error));
     return error;
   }
 };
