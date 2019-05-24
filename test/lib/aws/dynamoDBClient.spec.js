@@ -114,7 +114,6 @@ describe('dynamoDBClient', function () {
       const dynamoDB = new dynamoDBClient(table);
       await dynamoDB.create(itemTobSaved);
       const actualResult = await dynamoDB.delete(key);
-      
       expect(actualResult).to.deep.equal(dynamoDBResponse);
     });
   });
