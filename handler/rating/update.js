@@ -3,7 +3,7 @@ import { updateRating } from '../../src/rating';
 
 module.exports.process = async (event) => {
   try {
-    const statusCode = 201;
+    const statusCode = 200;
     const response = await updateRating(event);
 
     return {
