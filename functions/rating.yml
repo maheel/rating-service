@@ -1,0 +1,36 @@
+create-rating:
+  handler: src/handler/rating/create.process
+  timeout: 6
+  events:
+    - http:
+        path: rating
+        method: POST
+        cors: true
+
+update-rating:
+  handler: src/handler/rating/update.process
+  timeout: 6
+  events:
+    - http:
+        path: rating/{contentId}
+        method: PUT
+        cors: true
+
+delete-rating:
+  handler: src/handler/rating/delete.process
+  timeout: 6
+  events:
+    - http:
+        path: rating/{contentId}
+        method: DELETE
+        cors: true
+
+get-rating-by-content:
+  handler: src/handler/rating/getRatingByContent.process
+  timeout: 10
+  memory: 512
+  events:
+    - http:
+        path: rating/content/{contentId}
+        method: GET
+        cors: true

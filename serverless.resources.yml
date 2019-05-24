@@ -1,0 +1,32 @@
+Resources:
+  RatingTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete  # ensure to change to Retain once in prod. Otherwise, the DB will start fresh on every deploy
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: id
+          AttributeType: S
+        -
+          AttributeName: contentId
+          AttributeType: N
+      KeySchema:
+        -
+          AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: ${self:provider.environment.RATING_TABLE}
+      GlobalSecondaryIndexes:
+        -
+          IndexName: ${self:provider.environment.RATING_TABLE_INDEX_CONTENT_ID}
+          KeySchema:
+            -
+              AttributeName: contentId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

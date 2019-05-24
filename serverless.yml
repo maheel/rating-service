@@ -22,105 +22,17 @@ provider:
     SERVERLESS_STAGE: ${self:provider.stage}
     RATING_TABLE: ${self:service}-${self:provider.stage}-rating
     RATING_TABLE_INDEX_CONTENT_ID: content_id_index
-  iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - logs:CreateLogGroup
-          - logs:DeleteLogGroup
-          - logs:CreateLogStream
-          - logs:PutLogEvents
-        Resource: arn:aws:logs:${self:provider.region}:*:*
-      - Effect: Allow
-        Action:
-          - dynamodb:Query
-          - dynamodb:Scan
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-        Resource:
-          - Fn::GetAtt:
-            - RatingTable
-            - Arn
-          - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RATING_TABLE}/index/${self:provider.environment.RATING_TABLE_INDEX_CONTENT_ID}
+  iamRoleStatements: ${file(./serverless.iam.yml):iamRoleStatements}
 
 package:
   exclude:
     - node_modules/**
     - test/**
 
-resources:
-  Resources:
-    RatingTable:
-      Type: AWS::DynamoDB::Table
-      DeletionPolicy: Delete  # ensure to change to Retain once in prod. Otherwise, the DB will start fresh on every deploy
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
-          -
-            AttributeName: contentId
-            AttributeType: N
-        KeySchema:
-          -
-            AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.RATING_TABLE}
-        GlobalSecondaryIndexes:
-          -
-            IndexName: ${self:provider.environment.RATING_TABLE_INDEX_CONTENT_ID}
-            KeySchema:
-              -
-                AttributeName: contentId
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
+resources: ${file(./serverless.resources.yml)}
 
-functions:
-  create-rating:
-    handler: handler/rating.create
-    timeout: 6
-    events:
-      - http:
-          path: rating
-          method: POST
-          cors: true
+functions: ${file(./serverless.functions.js)}
   
-  update-rating:
-    handler: handler/rating.update
-    timeout: 6
-    events:
-      - http:
-          path: rating/{contentId}
-          method: PUT
-          cors: true
-
-  delete-rating:
-    handler: handler/rating.delete
-    timeout: 6
-    events:
-      - http:
-          path: rating/{contentId}
-          method: DELETE
-          cors: true
-
-  get-rating-by-content:
-    handler: handler/rating.getRatingByContent
-    timeout: 10
-    memory: 512
-    events:
-      - http:
-          path: rating/content/{contentId}
-          method: GET
-          cors: true
-
 custom:
   webpack:
     webpackConfig: ./webpack.config.js

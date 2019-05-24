@@ -95,7 +95,7 @@ async function hasUserAlreadyVotedForSameContent(contentId, userId) {
  *
  * @returns {Promise.<*>}
  */
-async function createRating(request, callback) {
+async function createRating(request) {
   try {
     const body = JSON.parse(request.body);
 
@@ -114,10 +114,10 @@ async function createRating(request, callback) {
     const dynamoDB = new dynamoDBClient(ratingTable);
     await dynamoDB.create(itemTobeSaved);
 
-    return callback(null, body);
+    return body;
   } catch (error) {
     console.log('[error]', JSON.stringify(error));
-    return callback(error);
+    return error;
   }
 }
 
@@ -129,7 +129,7 @@ async function createRating(request, callback) {
  *
  * @returns {Promise.<*>}
  */
-async function updateRating(request, callback) {
+async function updateRating(request) {
   try {
     const body = JSON.parse(request.body);
     const { contentId, userId, rating } = body;
@@ -164,10 +164,10 @@ async function updateRating(request, callback) {
     const dynamoDB = new dynamoDBClient(ratingTable);
     await dynamoDB.update(key, expression, value);
 
-    return callback(null, body);
+    return body;
   } catch (error) {
     console.log('[error]', JSON.stringify(error));
-    return callback(error);
+    return error;
   }
 }
 
@@ -179,7 +179,7 @@ async function updateRating(request, callback) {
  *
  * @returns {Promise.<*>}
  */
-async function deleteRating(request, callback) {
+async function deleteRating(request) {
   try {
     const body = JSON.parse(request.body);
     const { contentId, userId } = body;
@@ -205,10 +205,10 @@ async function deleteRating(request, callback) {
     const dynamoDB = new dynamoDBClient(ratingTable);
     await dynamoDB.delete(key);
 
-    return callback(null, body);
+    return body;
   } catch (error) {
     console.log('[error]', JSON.stringify(error));
-    return callback(error);
+    return error;
   }
 }
 
@@ -256,7 +256,7 @@ async function buildRatingResponse(ratingItems) {
  *
  * @returns {Promise.<*>}
  */
-async function getRatingByContent(request, callback) {
+async function getRatingByContent(request) {
   try {
     const { contentId } = request.pathParameters;
 
@@ -283,10 +283,10 @@ async function getRatingByContent(request, callback) {
 
     Object.assign(response, ratingResponse);
 
-    return callback(null, response);
+    return response;
   } catch (error) {
     console.log('[error]', JSON.stringify(error));
-    return callback(error);
+    return error;
   }
 }
 
