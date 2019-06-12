@@ -21,8 +21,6 @@ for AWS labmbda functions
 2. Sample-size - It won't return anything if there is no sufficient number of total ratings. Limit has been defined in 
 `src/constant/index.js` and it has been set to 20 currently.
 
-3. Outliers - I assumed that there will be a machine learning model in order to detect outliers and remove / disable from the DB
-
 ## Prerequisites
 
 Please follow following steps in order to get the project up and running.
