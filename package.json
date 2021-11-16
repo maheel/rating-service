@@ -16,7 +16,7 @@
     "test:integration:offline": "newman run test/integration/rating-service.postman_collection.json -e test/integration/rating-service.localhost.postman_environment.json"
   },
   "devDependencies": {
-    "aws-sdk": "2.184.0",
+    "aws-sdk": "2.814.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
