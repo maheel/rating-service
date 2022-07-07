@@ -58,7 +58,7 @@
     "bluebird": "^3.5.1",
     "jsonapi-serializer": "^3.6.1",
     "mathjs": "^5.3.0",
-    "moment": "^2.20.1",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.14",
     "source-map-support": "^0.5.1",
     "uuid": "^3.3.2"
